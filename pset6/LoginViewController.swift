@@ -11,15 +11,10 @@ import Firebase
 
 
 class LoginViewController: UIViewController {
-    
    
     @IBOutlet weak var emailText: UITextField!
     @IBOutlet weak var passwordText: UITextField!
     @IBOutlet weak var loginButton: UIButton!
-    
-    var ref: FIRDatabaseReference!
-    
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,10 +22,6 @@ class LoginViewController: UIViewController {
         
         emailText.text = ""
         passwordText.text = ""
-        
-        ref = FIRDatabase.database().reference()
-        
-        
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,6 +30,13 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func loginUser(_ sender: Any) {
+        
+        // Check if login field is filled correctly.
+        if emailText.text! == "" && passwordText.text == "" {
+            self.alertError()
+        }
+        
+        // Log in user.
         FIRAuth.auth()!.signIn(withEmail: self.emailText.text!, password: self.passwordText.text!) {
             (user, error) in
             if error != nil {
@@ -55,7 +53,5 @@ class LoginViewController: UIViewController {
         alert.addAction(OKAction)
         self.present(alert, animated: true, completion: nil)
     }
-
-
 }
 

@@ -15,8 +15,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchName: UITextField!
     
-    var ref: FIRDatabaseReference?
-    
     var id = Int()
     var wineName = [String]()
     var wineLabel = [String]()
@@ -26,8 +24,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = FIRDatabase.database().reference()
+
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -40,7 +37,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
 
     @IBAction func searchButton(_ sender: Any) {
         
-        requestHTTPName(Title: searchName.text!)
+        if searchName.text == "" {
+            self.alertError()
+        } else {
+           requestHTTPName(Title: searchName.text!)
+        }
         
         // Empty textfield after search.
         searchName.text = ""
@@ -51,9 +52,21 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         wineVineyard.removeAll()
         wineVineyardName.removeAll()
         wineRatings.removeAll()
+        
         tableView.reloadData()
     }
     
+    // Log user out of app.
+    @IBAction func logOut(_ sender: Any) {
+        do {
+            try FIRAuth.auth()?.signOut()
+        } catch let Error as NSError {
+            print ("Error signing out: %@", Error)
+        }
+        self.performSegue(withIdentifier: "searchToLogin", sender: nil)
+    }
+    
+    // MARK: - HTTP request
     func requestHTTPName(Title: String) {
         
         let urlString = Title.replacingOccurrences(of: " ", with: "+")
@@ -86,7 +99,6 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
                 // Initialize list.
                 let n = self.wineName.count
                 let listing = list[0..<n]
-                //print(labels)
                 
                 for list in listing {
                     
@@ -176,6 +188,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
             let description = segue.destination as! DescriptionViewController
             let indexPath = self.tableView.indexPathForSelectedRow!
             
+            // Fill description controller variables with search content.
             description.wineName = wineName[indexPath.row]
             description.wineLabel = wineLabel[indexPath.row]
             description.wineRatings = wineRatings[indexPath.row]
@@ -184,6 +197,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         }
     }
     
-
+    // MARK: - Error
+    
+    func alertError() {
+        let alert = UIAlertController(title: "Error", message: "Search field is empty.", preferredStyle: .alert)
+        let OKAction = UIAlertAction(title: "OK", style: UIAlertActionStyle.default)
+        alert.addAction(OKAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 
 }

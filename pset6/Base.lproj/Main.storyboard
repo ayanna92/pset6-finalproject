@@ -540,7 +540,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7ky-nl-2RH">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="94"/>
                                         <subviews>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AEx-At-IFt">
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Type in wine name" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="AEx-At-IFt">
                                                 <rect key="frame" x="8" y="8" width="284" height="30"/>
                                                 <nil key="textColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -572,10 +572,18 @@
                                                     <segue destination="15j-ex-AlA" kind="show" identifier="searchToFavorites" id="x2Y-B2-984"/>
                                                 </connections>
                                             </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LZh-Ie-hV3">
+                                                <rect key="frame" x="300" y="42" width="67" height="30"/>
+                                                <state key="normal" title="Log Out"/>
+                                                <connections>
+                                                    <action selector="logOut:" destination="OWl-sU-XDI" eventType="touchUpInside" id="3MR-IW-7Bk"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" red="1" green="0.81472068549999999" blue="0.65628405219999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstItem="JSB-Q2-tOf" firstAttribute="top" secondItem="7ky-nl-2RH" secondAttribute="topMargin" id="Agx-oN-3Cd"/>
+                                            <constraint firstItem="LZh-Ie-hV3" firstAttribute="trailing" secondItem="JSB-Q2-tOf" secondAttribute="trailing" id="I5v-bc-drB"/>
                                             <constraint firstItem="JSB-Q2-tOf" firstAttribute="leading" secondItem="AEx-At-IFt" secondAttribute="trailing" constant="8" symbolic="YES" id="Ud2-3K-IgO"/>
                                             <constraint firstItem="mbq-lL-Z4E" firstAttribute="top" secondItem="7ky-nl-2RH" secondAttribute="top" constant="42" id="WLw-Q9-iBS"/>
                                             <constraint firstItem="AEx-At-IFt" firstAttribute="bottom" secondItem="JSB-Q2-tOf" secondAttribute="bottom" id="cVm-v7-eOe"/>
@@ -583,6 +591,8 @@
                                             <constraint firstItem="mbq-lL-Z4E" firstAttribute="leading" secondItem="7ky-nl-2RH" secondAttribute="leading" constant="57" id="snQ-ni-oeM"/>
                                             <constraint firstAttribute="bottom" secondItem="mbq-lL-Z4E" secondAttribute="bottom" constant="22" id="uu3-Rr-gby"/>
                                             <constraint firstItem="JSB-Q2-tOf" firstAttribute="trailing" secondItem="7ky-nl-2RH" secondAttribute="trailingMargin" id="vBM-eQ-HNy"/>
+                                            <constraint firstItem="LZh-Ie-hV3" firstAttribute="baseline" secondItem="mbq-lL-Z4E" secondAttribute="baseline" id="y7a-fv-j5G"/>
+                                            <constraint firstItem="LZh-Ie-hV3" firstAttribute="leading" secondItem="JSB-Q2-tOf" secondAttribute="leading" id="yVV-1v-wgI"/>
                                             <constraint firstItem="mbq-lL-Z4E" firstAttribute="top" secondItem="AEx-At-IFt" secondAttribute="bottom" constant="4" id="z7Y-9r-NRn"/>
                                         </constraints>
                                     </view>
@@ -646,11 +656,12 @@
                         <outlet property="searchName" destination="AEx-At-IFt" id="HLj-Wb-uVs"/>
                         <outlet property="tableView" destination="244-0g-DAX" id="7BA-E8-nuR"/>
                         <segue destination="zBI-pi-aX2" kind="show" identifier="searchToDescription" id="5rH-Z4-Bjh"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="searchToLogin" id="IV1-PS-Tvn"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lEI-oo-MPG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1473" y="878"/>
+            <point key="canvasLocation" x="1472.8" y="877.51124437781118"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="9OW-8G-NDa">
@@ -675,8 +686,9 @@
         <image name="1197106839380250608piotr_halas_glass_of_wine.svg.hi" width="252" height="591"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="IV1-PS-Tvn"/>
         <segue reference="B7f-8r-aMT"/>
-        <segue reference="Wdb-hQ-lDK"/>
-        <segue reference="tEg-o0-MM8"/>
+        <segue reference="x2Y-B2-984"/>
+        <segue reference="Pzp-S4-IIT"/>
     </inferredMetricsTieBreakers>
 </document>

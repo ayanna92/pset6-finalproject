@@ -16,12 +16,8 @@ class RegisterViewController: UIViewController {
     @IBOutlet weak var registerButton: UIButton!
     @IBOutlet weak var confirmPasswordText: UITextField!
     
-    var ref:FIRDatabaseReference?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        ref = FIRDatabase.database().reference()
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,22 +38,27 @@ class RegisterViewController: UIViewController {
         
         // Create user and log them in.
         FIRAuth.auth()!.createUser(withEmail: self.emailText.text!, password: self.passwordText.text!) { (user, error) in
-            if error != nil {
+            if error == nil {
+                FIRAuth.auth()!.signIn(withEmail: self.emailText.text!, password: self.passwordText.text!)
+            } else {
                 self.alertError()
-                return
             }
-            FIRAuth.auth()!.signIn(withEmail: self.emailText.text!, password: self.passwordText.text!)
         }
         
-        // Alert and login.
-        let alert = UIAlertController(title: "Register", message: "You are now a member of MiWine", preferredStyle: .alert)
-        let okButton = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
+        // User is registered allert.
+        if FIRAuth.auth()?.currentUser != nil{
+            let alert = UIAlertController(title: "Register", message: "You are now a member of MiWine", preferredStyle: .alert)
+            let okButton = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: {
             (_)in
-            self.performSegue(withIdentifier: "loginAfterRegister", sender: self)
-        })
-        alert.addAction(okButton)
-        self.present(alert, animated: true, completion: nil)
-
+            
+                self.performSegue(withIdentifier: "loginAfterRegister", sender: self)
+            
+            })
+            alert.addAction(okButton)
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            self.alertError()
+        }
     }
     
     // Error Alert.
@@ -65,6 +66,7 @@ class RegisterViewController: UIViewController {
         let alert = UIAlertController(title: "Email and/or password(s) invalid", message: "Enter matching passwords and/or valid email", preferredStyle: .alert)
         let okButton = UIAlertAction(title: "OK", style:  UIAlertActionStyle.default)
         alert.addAction(okButton)
+        self.present(alert, animated: true, completion: nil)
         
     }
 

@@ -17,8 +17,6 @@ class FavoritesTableViewController: UITableViewController {
     
     var wineName = String()
     var wineNameArray = [String]()
-
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,30 +41,7 @@ class FavoritesTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func loadImageFromUrl(url: String, view: UIImageView){
-        
-        // Create Url from string.
-        let url = NSURL(string: url)!
-        
-        // Download task:
-        let task = URLSession.shared.dataTask(with: url as URL) { (responseData, responseUrl, error) -> Void in
-            // if responseData is not null...
-            if let data = responseData{
-                
-                // execute in UI thread.
-                DispatchQueue.main.async(execute: { () -> Void in
-                    view.image = UIImage(data: data)
-                    
-                })
-            }
-        }
-        
-        // Run task
-        task.resume()
-    }
-
-
-    // MARK: - Table view data source
+    // MARK: - Tableview
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         return 120
@@ -78,9 +53,9 @@ class FavoritesTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         self.performSegue(withIdentifier: "favoritesToSearch", sender: nil)
     }
-
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "favoritesCell", for: indexPath) as! FavoritesTableViewCell
@@ -90,18 +65,17 @@ class FavoritesTableViewController: UITableViewController {
         return cell
     }
     
-    // Override to support editing the table view.
+    // Override to support deleting from tableview.
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            // Delete the row from the data source
             
+            // Delete the row from the data source
             let deleteName = self.wineNameArray[indexPath.row]
             self.wineNameArray.remove(at: indexPath.row)
             
             ref?.child("Users").child("Favorites").child(self.user!).child(deleteName).removeValue()
             
             self.tableView.reloadData()
-
         }
     }
     
@@ -110,41 +84,12 @@ class FavoritesTableViewController: UITableViewController {
         let user =  FIRAuth.auth()?.currentUser?.uid
         
         ref?.child(user!).child(firstTree).child(secondTree).child(thirdTree).child(childIWantToRemove).removeValue { (error, ref) in
-            if error != nil {
-                print("error \(error)")
+                if error != nil {
+                    print("error \(error)")
+                }
+                else{
+                    print ("removed")
+                }
             }
-            else{
-                print ("removed")
-            }
-            
-            
-        }
     }
-    
-
-    /*
-    // Override to support rearranging the table view.
-    override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-
-    }
-    */
-
-    /*
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
-    }
-    */
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
